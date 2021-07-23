@@ -23,14 +23,14 @@ Now let's test our broker by first running it in the background as a daemon.
 
 Second, install the required node packages, either by typing 
 
-    npm install
+    pi@raspberry:~ $ npm install
     
 which will install the packages included in *package-lock.json* or manually by running 
 
-    npm install mqtt --save
+    pi@raspberry:~ $ npm install mqtt --save
 
 Then you should be able to run our node client
 
-    node node_client.js
+    pi@raspberry:~ $ node node_client.js
 
 To do more testing of the mosquitto broker follow the instructions [here](https://randomnerdtutorials.com/testing-mosquitto-broker-and-client-on-raspbbery-pi/).
