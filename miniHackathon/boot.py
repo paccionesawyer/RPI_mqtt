@@ -5,14 +5,15 @@ import machine
 import micropython
 import network
 import esp
-esp.osdebug(None)
+import uos
 import gc
+esp.osdebug(None)
 gc.collect()
 
 # Import Pin to control the LEDs
 from machine import Pin
 
-import uos, machine
+
 uart = machine.UART(0, 115200, timeout = 50)
 uos.dupterm(uart, 1)
 
