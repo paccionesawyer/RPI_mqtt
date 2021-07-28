@@ -6,7 +6,7 @@ import ujson as json
 
 def sub_cb(topic, msg):
     #print("callback")
-    if topic == b'run' :
+    if topic == MQTT_CONFIG["PUB_TOPIC1"] :
         msgStr = msg.decode('utf-8')
         #print(type(msgStr))
         write(msgStr)
