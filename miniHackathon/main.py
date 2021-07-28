@@ -5,8 +5,8 @@ import ujson as json
 #response = {"AccelX" : random.getrandbits(10), "AccelY" : random.getrandbits(10), "AccelZ" : random.getrandbits(10)}
 
 def sub_cb(topic, msg):
-    #print("callback")
-    if topic == MQTT_CONFIG["PUB_TOPIC1"] :
+    print("callback")
+    if topic == MQTT_CONFIG["SUB_TOPIC1"] :
         msgStr = msg.decode('utf-8')
         #print(type(msgStr))
         write(msgStr)
@@ -50,19 +50,19 @@ except OSError as e:
 LED.on()
 
 client.publish(MQTT_CONFIG["PUB_TOPIC1"], b'Connected: ' + MQTT_CONFIG["CLIENT_ID"])
-uos.dupterm(None, 1) # Turn the REPL off to be able to read a message into a variable
+#uos.dupterm(None, 1) # Turn the REPL off to be able to read a message into a variable
 while True:
 
-    dataBytes = read()
-    write(">>>")
+    #dataBytes = read()
+    #write(">>>")
 
-    if (dataBytes == b'\x03\r\n'):
-        uos.dupterm(uart, 1) # Turn the REPL back on
-        print("got a ctrl+c")
-        break
+    #if (dataBytes == b'\x03\r\n'):
+    #    uos.dupterm(uart, 1) # Turn the REPL back on
+    #    print("got a ctrl+c")
+    #    break
 
     # Put code to exit while loop is 
-    client.publish(MQTT_CONFIG["PUB_TOPIC1"], dataBytes)
+    client.publish(MQTT_CONFIG["PUB_TOPIC1"], "hello from Sawyer")
     client.check_msg()
-    utime.sleep(0.1)
+    utime.sleep(1)
 

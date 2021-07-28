@@ -5,15 +5,14 @@ import machine
 import micropython
 import network
 import esp
-import uos
-import gc
 esp.osdebug(None)
+import gc
 gc.collect()
 
 # Import Pin to control the LEDs
 from machine import Pin
 
-
+import uos, machine
 uart = machine.UART(0, 115200, timeout = 50)
 uos.dupterm(uart, 1)
 
@@ -49,7 +48,7 @@ while station.isconnected() == False:
         connect_counter = 0
         print("Trying Again")
         station.active(True)
-        station.connect(ssid, password)
+        station.connect(WIFI_CONFIG["SSID"], WIFI_CONFIG["PASS"])
         m = station.ifconfig()
     utime.sleep(1)
     connect_counter += 1
