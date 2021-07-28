@@ -2,24 +2,23 @@ import utime
 from umqtt.simple import MQTTClient
 import ubinascii
 import machine
-import micropython
 import network
 import esp
-esp.osdebug(None)
+import uos
 import gc
+esp.osdebug(None)
 gc.collect()
+try:
+    del bytes
+except:
+    pass
 
-# Import Pin to control the LEDs
-from machine import Pin
-
-import uos, machine
+# Define uart and turn the REPL on
 uart = machine.UART(0, 115200, timeout = 50)
 uos.dupterm(uart, 1)
 
-# set the LED Pin
-LED = Pin(2, Pin.OUT)
-
 WIFI_CONFIG = {
+    # Configuration Details for the Edge Server
     "SSID" : "RPiSpatialToolbox_EdgeWifi",
     "PASS" : "Vuforia123"
 }
@@ -30,8 +29,10 @@ MQTT_CONFIG = {
     "USER" : "",
     "PASS" : "",
     "PORT" : 1883,
-    "PUB_TOPIC1" : b'read',
-    "SUB_TOPIC1" : b'run',
+    "PUB_TOPIC1" : b'hub_data1',
+    "PUB_TOPIC2" : b'',
+    "SUB_TOPIC1" : b'commands1',
+    "SUB_TOPIC2" : b'',
     "CLIENT_ID" : b'esp_8266-' + ubinascii.hexlify(machine.unique_id())
 }
 
@@ -43,16 +44,15 @@ station.connect(WIFI_CONFIG["SSID"], WIFI_CONFIG["PASS"])
 connect_counter = 0
 
 print("Waiting to Connect to Wifi")
+
 while station.isconnected() == False:
     if connect_counter > 10:
         connect_counter = 0
         print("Trying Again")
         station.active(True)
         station.connect(WIFI_CONFIG["SSID"], WIFI_CONFIG["PASS"])
-        m = station.ifconfig()
     utime.sleep(1)
     connect_counter += 1
 
 print('WiFi Connection successful:', end=" ")
 print(station.ifconfig())
-
