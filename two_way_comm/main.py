@@ -3,7 +3,7 @@ import random
 import ujson as json
 
 #response = {"AccelX" : random.getrandbits(10), "AccelY" : random.getrandbits(10), "AccelZ" : random.getrandbits(10)}
-        
+
 def sub_cb(topic, msg):
     #print("callback")
     if topic == b'run' :
@@ -28,16 +28,13 @@ def restart_and_reconnect():
     machine.reset()
 
 def read ():
-    uos.dupterm(None, 1)
     reply = b'sss'
     response = None
-    
+
     while (response == None):
         response = uart.readline()
-        print(response)
-        
-    uos.dupterm(uart, 1)
-    
+        #print(response)
+
     return response
 
 def write(msg):
@@ -49,21 +46,23 @@ try:
     client = connect_and_subscribe()
 except OSError as e:
     restart_and_reconnect()
-    
+
 LED.on()
 
 client.publish(MQTT_CONFIG["PUB_TOPIC1"], b'Connected: ' + MQTT_CONFIG["CLIENT_ID"])
-
+uos.dupterm(None, 1) # Turn the REPL off to be able to read a message into a variable
 while True:
+
     dataBytes = read()
-    
+    write(">>>")
+
     if (dataBytes == b'\x03\r\n'):
-        break
+        uos.dupterm(uart, 1) # Turn the REPL back on
         print("got a ctrl+c")
+        break
+
     # Put code to exit while loop is 
     client.publish(MQTT_CONFIG["PUB_TOPIC1"], dataBytes)
     client.check_msg()
-    utime.sleep(1)
-    
-
+    utime.sleep(0.1)
 
