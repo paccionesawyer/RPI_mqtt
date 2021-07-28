@@ -84,7 +84,7 @@ def main():
     response = dongle.ask(msg)
     print("response:", response)
         
-    if response == '':
+    if response == '' or response == '>>>':
         response = dongle.read()
         
     try:
