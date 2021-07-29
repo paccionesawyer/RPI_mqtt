@@ -73,7 +73,6 @@ def main():
         
         dataBytes = read()
         write(">>>")
-        print("here")
         if (dataBytes == b'\x03\r\n' or dataBytes == b'\x03'):
            uos.dupterm(uart, 1) # Turn the REPL back on
            print("got a ctrl+c")

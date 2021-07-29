@@ -81,8 +81,9 @@ def main():
     msg = ujson.dumps(hub_data)
     #msg = "12345678901234567890123456789012345678901234567890123456789012345678901234567890"
     response = dongle.ask(msg)
+    #print("og", response)
     response = response.replace('>','')
-    print("response:", response)
+    #print("response:", response)
     if response == '' or response == ">>>":
         response = dongle.read()
         
