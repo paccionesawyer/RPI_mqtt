@@ -1,7 +1,7 @@
 // ************** CHANGE THIS ************** //
-var TOOL_NAME = "SpikeW"; // This is what is made on the webserver for the image target
-let objectName = "spikeNodeW"; // This is the name of the folder in spatialToolbox in Documents
-var complexity = "SpikeW"; // This will make sure the complexity level for each can be different
+var TOOL_NAME = "SpikeW1"; // This is what is made on the webserver for the image target
+let objectName = "spikeNodeW1"; // This is the name of the folder in spatialToolbox in Documents
+var complexity = "SpikeW1"; // This will make sure the complexity level for each can be different
 
 // Variables
 var server = require("@libraries/hardwareInterfaces");
@@ -14,9 +14,9 @@ var options = {
     qos: 1,
 };
 
-var read_topic = "read"; // Subscribe to this topic to read from Spike Sensors
-var run_topic = "run"; // Publish to this topic what commands should be run on the Spike Prime
-var initialize_topic = "initialize"; // Publish to this Topic every reset of the edge server to restart the code on the ESP
+var SUB_TOPIC1 = "hub_data1"; // Subscribe to this topic to read from Spike Sensors
+var PUB_TOPIC1 = "commands1"; // Publish to this topic what commands should be run on the Spike Prime
+var SUB_TOPIC2 = "initialize"; // Publish to this Topic every reset of the edge server to restart the code on the ESP (Currently Unused)
 
 var colors = [
     "black",
@@ -40,11 +40,11 @@ var sensor_data = "";
 client.on("connect", function () {
     console.log("connected  " + client.connected);
     console.log("Subscribing to the read Topic");
-    client.subscribe(read_topic, {
+    client.subscribe(SUB_TOPIC1, {
         qos: 0
     });
     console.log("Subscribing to the init Topic");
-    client.subscribe(initialize_topic, {
+    client.subscribe(SUB_TOPIC2, {
         qos: 2
     });
     // TODO Maybe have a reset topic that the ESP is subscribed to if there is ever a message the ESP will CTRL+D soft reboot
@@ -56,12 +56,12 @@ client.on("message", function (topic, message, packet) {
     console.log("topic is " + topic);
 
     // Sort Sensor Data whenever there is a message from the read topic
-    if (topic == read_topic) {
+    if (topic == SUB_TOPIC1) {
         try {
             sensor_data = JSON.parse(message);
             sortSensor(sensor_data);
         } catch (e) {}
-    } else if (topic == initialize_topic) {
+    } else if (topic == SUB_TOPIC2) {
         connect_message = "Connect"; // The message the ESP sends to the init topic TODO update
         if (message == connect_message) {
             // Now we can run the actual program
@@ -96,7 +96,7 @@ if (exports.enabled) {
     });
 
     // Publish to the initialize topic to let the spike prime know to send port data
-    publish(initialize_topic, "new instance", options);
+    publish(SUB_TOPIC2, "new instance", options);
 
     // Sets up the settings that can be customized on localhost:8080
     function setup() {
@@ -308,7 +308,7 @@ function startHardwareInterface() {
         if (runMotors) {
             setTimeout(() => {
                 publish(
-                    run_topic,
+                    PUB_TOPIC1,
                     "A" + ".start(" + Math.round(data.value) + ")\r\n",
                     options
                 );
@@ -326,7 +326,7 @@ function startHardwareInterface() {
         if (runMotors) {
             setTimeout(() => {
                 publish(
-                    run_topic,
+                    PUB_TOPIC1,
                     "B" + ".start(" + Math.round(data.value) + ")\r\n",
                     options
                 );
@@ -344,7 +344,7 @@ function startHardwareInterface() {
         if (runMotors) {
             setTimeout(() => {
                 publish(
-                    run_topic,
+                    PUB_TOPIC1,
                     "C" + ".start(" + Math.round(data.value) + ")\r\n",
                     options
                 );
@@ -363,7 +363,7 @@ function startHardwareInterface() {
             if (motor1 != "none") {
                 setTimeout(() => {
                     publish(
-                        run_topic,
+                        PUB_TOPIC1,
                         motor1 + ".start(" + Math.round(-data.value) + ")\r\n",
                         options
                     );
@@ -372,7 +372,7 @@ function startHardwareInterface() {
             if (motor2 != "none") {
                 setTimeout(() => {
                     publish(
-                        run_topic,
+                        PUB_TOPIC1,
                         motor2 + ".start(" + Math.round(data.value) + ")\r\n",
                         options
                     );
@@ -381,7 +381,7 @@ function startHardwareInterface() {
             if (motor3 != "none") {
                 setTimeout(() => {
                     publish(
-                        run_topic,
+                        PUB_TOPIC1,
                         motor3 + ".start(" + Math.round(data.value) + ")\r\n",
                         options
                     );
@@ -398,7 +398,7 @@ function startHardwareInterface() {
     server.addReadListener(objectName, TOOL_NAME, "screen", function (data) {
         setTimeout(() => {
             publish(
-                run_topic,
+                PUB_TOPIC1,
                 'hub.display.show("' + data.value + '")\r\n',
                 options
             );
@@ -409,7 +409,7 @@ function startHardwareInterface() {
     server.addReadListener(objectName, TOOL_NAME, "LED", function (data) {
         setTimeout(() => {
             publish(
-                run_topic,
+                PUB_TOPIC1,
                 "hub.led(" + data.value + ")\r\n",
                 options
             );
@@ -522,13 +522,13 @@ function processAccelerometer(accelArr) {
 function stopMotors() {
     runMotors = false;
     if (motor1 != "none") {
-        publish(run_topic, "motor1.pwm(0)\r\n", options);
+        publish(PUB_TOPIC1, "motor1.pwm(0)\r\n", options);
     }
     if (motor2 != "none") {
-        publish(run_topic, "motor2.pwm(0)\r\n", options);
+        publish(PUB_TOPIC1, "motor2.pwm(0)\r\n", options);
     }
     if (motor3 != "none") {
-        publish(run_topic, "motor3.pwm(0)\r\n", options);
+        publish(PUB_TOPIC1, "motor3.pwm(0)\r\n", options);
     }
 }
 
