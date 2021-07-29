@@ -74,7 +74,7 @@ def configure(commands):
     
 build_sensorJson()
 
-
+motor1.pwm(30)
 def main():
     read()
     #print("Spike hub_data:", hub_data)
@@ -83,7 +83,7 @@ def main():
     response = dongle.ask(msg)
     #print("og", response)
     response = response.replace('>','')
-    #print("response:", response)
+    print("response:", response)
     if response == '' or response == ">>>":
         response = dongle.read()
         
