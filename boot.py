@@ -6,6 +6,7 @@ import network
 import esp
 import uos
 import gc
+from sensitive_data import sensitive_data
 esp.osdebug(None)
 gc.collect()
 try:
@@ -19,13 +20,13 @@ uos.dupterm(uart, 1)
 
 WIFI_CONFIG = {
     # Configuration Details for the Edge Server
-    "SSID" : "RPiSpatialToolbox_EdgeWifi",
-    "PASS" : "Vuforia123"
+    "SSID" : sensitive_data["RPI_SSID"],
+    "PASS" : sensitive_data["RPI_PASS"]
 }
 
 MQTT_CONFIG = {
     # Configuration details of the MQTT Broker
-    "MQTT_BROKER" : "192.168.50.10",
+    "MQTT_BROKER" : sensitive_data["RPI_IP"],
     "USER" : "",
     "PASS" : "",
     "PORT" : 1883,
