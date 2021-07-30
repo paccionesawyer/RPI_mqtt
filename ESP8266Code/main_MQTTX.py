@@ -50,3 +50,4 @@ def publish_all(client, msg):
     for topic in pub_topics:
         client.publish(topic, msg)
 
+client = connect_and_subscribe()

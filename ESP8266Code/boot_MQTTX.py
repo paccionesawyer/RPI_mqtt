@@ -27,7 +27,7 @@ MQTT_CONFIG = {
     "USER" : sensitive_data["BROKER_USER"],
     "PASS" : sensitive_data["BROKER_PASS"],
     "PORT" : 1883,
-    "PUB_TOPIC1" : b'hello',
+    "PUB_TOPIC1" : b'hub_data1',
     "PUB_TOPIC2" : b'',
     "SUB_TOPIC1" : b'commands1',
     "SUB_TOPIC2" : b'',
