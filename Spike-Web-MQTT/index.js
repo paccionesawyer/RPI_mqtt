@@ -1,6 +1,6 @@
 /* 
  * Tufts University Fetlab, CEEO PTC (Sawyer Paccione)
- * Vuforia Spatial Edge Server Interface
+ * 
  * 
  */
 
@@ -17,7 +17,7 @@ var mqtt_options = {
 
 var objectName = 'Spike-Prime-Web';
 var TOOL_NAME = 'Spike-Prime-Web-Frame';
-
+var runMotors = true
 if (exports.enabled) {
     const mqtt = require('mqtt')
 
