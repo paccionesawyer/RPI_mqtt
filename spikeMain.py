@@ -74,7 +74,6 @@ def configure(commands):
     
 build_sensorJson()
 
-motor1.pwm(30)
 def main():
     read()
     #print("Spike hub_data:", hub_data)

@@ -10,10 +10,6 @@ import gc
 from sensitive_data import sensitive_data
 esp.osdebug(None)
 gc.collect()
-try:
-    del bytes
-except:
-    pass
 
 # Define uart and turn the REPL on
 uart = machine.UART(0, 115200, timeout = 50)

@@ -28,7 +28,7 @@ def connect_and_subscribe():
 
 def subscribe(client):
     for key in MQTT_CONFIG:
-        if key.startswith("SUB") and isinstance(MQTT_CONFIG[key], bytes) and MQTT_CONFIG[key] != b'':
+        if key.startswith("SUB") and str(type(MQTT_CONFIG[key])) == "<class 'bytes'>" and MQTT_CONFIG[key] != b'':
             client.subscribe(MQTT_CONFIG[key])
             print('subscribed to %s topic' % (MQTT_CONFIG[key]), end = ", ")
             sub_topics.append(MQTT_CONFIG[key])
@@ -52,7 +52,7 @@ def write(msg):
 
 def setup_publish(client):
     for key in MQTT_CONFIG:
-        if key.startswith("PUB") and isinstance(MQTT_CONFIG[key], bytes) and MQTT_CONFIG[key] != b'':
+        if key.startswith("PUB") and str(type(MQTT_CONFIG[key])) == "<class 'bytes'>" and MQTT_CONFIG[key] != b'':
             pub_topics.append(MQTT_CONFIG[key])
  
     publish_all(client, "Connected to %s" % MQTT_CONFIG['CLIENT_ID'])
