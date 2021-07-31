@@ -61,8 +61,8 @@ if (exports.enabled) {
         try {
             parseSensorData(message)
         } catch (e) {}
-        console.log("topic is " + topic);
-        publish(run_topic, "EDGE STILLHERE", mqtt_options)
+        //console.log("topic is " + topic);
+        //publish(run_topic, "EDGE STILLHERE", mqtt_options)
     });
 
     client.on("error", function (error) {

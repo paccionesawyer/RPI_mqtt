@@ -6,19 +6,18 @@ import network
 import esp
 import uos
 import gc
-
-from sensitive_data import sensitive_data
+from sensitive_data import sensitive_data # import passwords for WiFi and MQTT
 esp.osdebug(None)
 gc.collect()
 
-# Define uart and turn the REPL on
+# Turn the REPL on at the beginning of boot
 uart = machine.UART(0, 115200, timeout = 50)
 uos.dupterm(uart, 1)
 
 WIFI_CONFIG = {
     # Configuration Details for the Edge Server
-    "SSID" : sensitive_data["TUFTS_SSID"],
-    "PASS" : sensitive_data["TUFTS_PASS"]
+    "SSID" : sensitive_data["HOME_SSID"],
+    "PASS" : sensitive_data["HOME_PASS"]
 }
 
 MQTT_CONFIG = {
@@ -35,15 +34,14 @@ MQTT_CONFIG = {
 }
 
 station = network.WLAN(network.STA_IF)
-
 station.active(True)
 station.connect(WIFI_CONFIG["SSID"], WIFI_CONFIG["PASS"])
-
 connect_counter = 0
 
-print("Waiting to Connect to Wifi")
+print("Waiting to Connect to Wifi...")
 
 while station.isconnected() == False:
+    # Retry connecting to WiFi
     if connect_counter > 10:
         connect_counter = 0
         print("Trying Again")
