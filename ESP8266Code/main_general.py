@@ -58,7 +58,6 @@ def spike_waitMSG():
 
     while (response == None or response == b''):
         response = uart.readline()
-    spike_write(response)
     spike_write(">>>") # Immediately send to EOL statement to return from dongle.ask()
     return response
     
