@@ -27,9 +27,9 @@ MQTT_CONFIG = {
     "USER" : "",
     "PASS" : "",
     "PORT" : 1883,
-    "PUB_TOPIC1" : b'hub_data1',
+    "PUB_TOPIC1" : b'hub_data5',
     "PUB_TOPIC2" : b'',
-    "SUB_TOPIC1" : b'commands1',
+    "SUB_TOPIC1" : b'commands5',
     "SUB_TOPIC2" : b'',
     "CLIENT_ID" : b'esp_8266-' + ubinascii.hexlify(machine.unique_id())
 }

@@ -86,10 +86,16 @@ def main():
     if response == '' or response == ">>>":
         response = dongle.read()
         
-    try:
-        exec(response)
-    except:
-        pass
+    if response == 'custom' :
+        try:
+            exec(open('custom_program.py').read())
+        except:
+            pass
+    else:
+        try:
+            exec(response)
+        except:
+            pass
     
 while True:
     main()
